@@ -2,6 +2,8 @@ package com.example.fetch_android;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     // Initialize adapter
     ItemAdapter itemAdapter;
     TextView errorView;
+    Button refreshButton;
+    View imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +52,25 @@ public class MainActivity extends AppCompatActivity {
 
         errorView = findViewById(R.id.errorView);
         recyclerView = findViewById(R.id.recyclerView);
+        refreshButton = findViewById(R.id.refreshButton);
+        imageView = findViewById(R.id.imageView);
+        refreshButton.setOnClickListener(v -> refreshEvents());
         itemAdapter = new ItemAdapter(new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(itemAdapter);
         fetchData();
     }
 
+    private void refreshEvents() {
+        fetchData();
+        imageView.setVisibility(View.INVISIBLE);
+        refreshButton.setVisibility(View.INVISIBLE);
+        errorView.setVisibility(View.INVISIBLE);
+    }
     private void fetchData() {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://fetch-hiring.s3.amazonaws.com/hiri4ng.json";
+        String url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
 
         // Request a string response from the provided URL.
         @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"}) StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -105,7 +118,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }, error -> {
                     // Handle network errors
-                    errorView.setText("Network error! " + error.getMessage());
+                    imageView.setVisibility(View.VISIBLE);
+                    refreshButton.setVisibility(View.VISIBLE);
+                    errorView.setVisibility(View.VISIBLE);
+                    errorView.setText("Failed to load. You might not be connected to the Internet.");
                 });
 
         // Add the request to the RequestQueue.
