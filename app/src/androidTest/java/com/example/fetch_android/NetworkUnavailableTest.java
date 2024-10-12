@@ -28,7 +28,10 @@ public class NetworkUnavailableTest {
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void networkUnavailableTest() {
+    public void networkUnavailableTest() throws Exception {
+        Runtime.getRuntime().exec("svc wifi disable");
+        Thread.sleep(10000);
+
         ViewInteraction imageView = onView(
                 allOf(withId(R.id.imageView), withContentDescription("Not Connected"),
                         withParent(allOf(withId(R.id.main),
