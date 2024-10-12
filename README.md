@@ -77,3 +77,5 @@ A native Android app built in **Java** that retrieves, filters, and displays dat
 
 ## App Screens
 
+![Screenshot_20241012_135515](https://github.com/user-attachments/assets/72119b53-f9ad-4fc6-be05-6684f0a29483)![Screenshot_20241012_135620](https://github.com/user-attachments/assets/5d07b94d-cc04-4d82-b83c-c96ec4934041)
+
