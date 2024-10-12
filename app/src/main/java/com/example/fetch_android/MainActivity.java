@@ -2,6 +2,7 @@ package com.example.fetch_android;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Initialize adapter
     ItemAdapter itemAdapter;
-
+    TextView errorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        errorView = findViewById(R.id.errorView);
         recyclerView = findViewById(R.id.recyclerView);
         itemAdapter = new ItemAdapter(new ArrayList<>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,11 +57,10 @@ public class MainActivity extends AppCompatActivity {
     private void fetchData() {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://fetch-hiring.s3.amazonaws.com/hiring.json";
+        String url = "https://fetch-hiring.s3.amazonaws.com/hiri4ng.json";
 
         // Request a string response from the provided URL.
-        //                textView.setText("That didn't work!");
-        @SuppressLint("NotifyDataSetChanged") StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"}) StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
                     try {
                         // Parse the JSON array
@@ -99,9 +101,12 @@ public class MainActivity extends AppCompatActivity {
                         itemAdapter.notifyDataSetChanged();
 
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        errorView.setText("Something went wrong! Refer to: " + e.getMessage());
                     }
-                }, Throwable::printStackTrace);
+                }, error -> {
+                    // Handle network errors
+                    errorView.setText("Network error! " + error.getMessage());
+                });
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);

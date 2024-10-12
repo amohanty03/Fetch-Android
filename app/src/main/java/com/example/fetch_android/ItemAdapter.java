@@ -1,5 +1,6 @@
 package com.example.fetch_android;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Bind the group of items (each group belongs to a listId)
@@ -50,6 +52,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     private static TextView getTextView(@NonNull ViewHolder holder, ListItem listItem) {
         TextView nameTextView = new TextView(holder.itemView.getContext());
